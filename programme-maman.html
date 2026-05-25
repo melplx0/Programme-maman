@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Programme Bien-être</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lavender: #E8E0F0;
+    --lavender-mid: #C4B0D8;
+    --purple: #7B5EA7;
+    --purple-dark: #5A3E82;
+    --rose: #E8B4C0;
+    --rose-mid: #D4849A;
+    --rose-dark: #B85C74;
+    --mint: #A8D5C2;
+    --mint-dark: #5BA58A;
+    --warm: #FDF6F0;
+    --cream: #FAF5FF;
+    --charcoal: #2D2535;
+    --mid: #6B5F7A;
+    --light: #A99AB8;
+    --border: rgba(123,94,167,0.15);
+    --warning: #E8A87C;
+    --warning-bg: #FFF3E8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: white;
+    border-bottom: 2px solid var(--lavender);
+    display: flex; overflow-x: auto; scrollbar-width: none;
+    box-shadow: 0 2px 12px rgba(123,94,167,0.08);
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav button {
+    flex: none; padding: 14px 18px;
+    background: none; border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--light); cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  nav button.active { color: var(--purple); border-bottom-color: var(--purple); }
+  nav button:hover { color: var(--purple); }
+
+  /* SECTIONS */
+  .section { display: none; padding: 20px 18px 80px; max-width: 640px; margin: 0 auto; }
+  .section.active { display: block; animation: fadeUp 0.3s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--rose-dark) 100%);
+    border-radius: 20px;
+    padding: 32px 24px;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-emoji { font-size: 40px; margin-bottom: 8px; }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700;
+    line-height: 1.2; margin-bottom: 8px;
+  }
+  .hero p { font-size: 14px; opacity: 0.85; line-height: 1.5; }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(123,94,167,0.06);
+  }
+  .card-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .ci-purple { background: var(--lavender); }
+  .ci-rose { background: #FDEEF2; }
+  .ci-mint { background: #E8F5EF; }
+  .ci-warning { background: var(--warning-bg); }
+  .card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; font-weight: 700;
+  }
+  .card-tag {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--light); margin-bottom: 4px;
+  }
+
+  /* ALERT */
+  .alert {
+    background: var(--warning-bg);
+    border: 1px solid #F0C090;
+    border-left: 4px solid var(--warning);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #7A4A20;
+    line-height: 1.5;
+  }
+  .alert strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .stat-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px 10px; text-align: center;
+  }
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700; color: var(--purple);
+  }
+  .stat-label { font-size: 10px; color: var(--light); font-weight: 600; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* LIST */
+  .nice-list { list-style: none; }
+  .nice-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 0; border-bottom: 1px solid var(--border);
+    font-size: 14px; line-height: 1.4;
+  }
+  .nice-list li:last-child { border-bottom: none; }
+  .bullet {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; flex-shrink: 0; margin-top: 1px;
+  }
+  .b-purple { background: var(--lavender); color: var(--purple); font-weight: 700; }
+  .b-rose { background: #FDEEF2; color: var(--rose-dark); }
+  .b-mint { background: #E8F5EF; color: var(--mint-dark); }
+  .b-red { background: #FDECEA; color: #C62828; }
+  .b-gold { background: #FFF8E1; color: #B8860B; }
+
+  /* PHASE CARD */
+  .phase-block {
+    border-radius: 14px; padding: 16px; margin-bottom: 10px;
+    border: 1px solid var(--border);
+  }
+  .phase-block h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 700; margin-bottom: 6px;
+  }
+  .phase-block p { font-size: 13px; color: var(--mid); line-height: 1.5; }
+  .pb-phase1 { background: #FFF0F0; }
+  .pb-phase2 { background: #FFF8E1; }
+  .pb-phase3 { background: #E8F5EF; }
+  .pb-phase4 { background: #F0F4FF; }
+
+  /* WEEK GRID */
+  .week-row {
+    display: grid; grid-template-columns: 70px 1fr;
+    align-items: center; gap: 12px;
+    padding: 11px 14px; background: var(--cream);
+    border-radius: 12px; margin-bottom: 8px;
+    cursor: pointer; transition: background 0.15s;
+    border: 1px solid var(--border);
+  }
+  .week-row:hover { background: var(--lavender); }
+  .week-row.open-row { background: var(--purple); }
+  .week-row.open-row .day-name, .week-row.open-row .day-work { color: white; }
+  .day-name { font-size: 11px; font-weight: 700; color: var(--mid); text-transform: uppercase; letter-spacing: 0.08em; }
+  .day-work { font-size: 14px; font-weight: 600; }
+
+  .day-detail {
+    display: none; margin-bottom: 10px;
+    padding: 14px 16px; background: white;
+    border-radius: 12px; border-left: 4px solid var(--purple);
+    border: 1px solid var(--border);
+  }
+  .day-detail.open { display: block; }
+  .ex-list { list-style: none; }
+  .ex-list li {
+    padding: 7px 0; border-bottom: 1px solid var(--border);
+    font-size: 14px; display: flex;
+    justify-content: space-between; align-items: center;
+  }
+  .ex-list li:last-child { border-bottom: none; }
+  .sets { font-size: 11px; font-weight: 700; color: var(--mint-dark); background: #E8F5EF; padding: 2px 8px; border-radius: 10px; }
+
+  /* FOOD */
+  .food-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+  .chip {
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; border: 1px solid var(--border);
+  }
+  .chip-purple { background: var(--lavender); color: var(--purple-dark); }
+  .chip-mint { background: #E8F5EF; color: var(--mint-dark); }
+  .chip-rose { background: #FDEEF2; color: var(--rose-dark); }
+  .chip-gold { background: #FFF8E1; color: #8B6914; }
+  .chip-red { background: #FDECEA; color: #B71C1C; }
+
+  /* MENOPAUSE */
+  .meno-tip {
+    background: linear-gradient(135deg, #FDF0F8, #F0F0FF);
+    border: 1px solid var(--lavender-mid);
+    border-radius: 14px; padding: 16px; margin-bottom: 10px;
+  }
+  .meno-tip h3 { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--purple-dark); }
+  .meno-tip p { font-size: 13px; color: var(--mid); line-height: 1.5; }
+
+  /* TRACKER */
+  .t-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px; margin-bottom: 12px;
+  }
+  .t-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 700;
+    margin-bottom: 12px; display: flex;
+    justify-content: space-between; align-items: center;
+  }
+  .t-prog { font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: var(--mint-dark); }
+  .habit {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .habit:last-child { border-bottom: none; }
+  .hbox {
+    width: 22px; height: 22px; border-radius: 6px;
+    border: 2px solid var(--border); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; font-size: 12px;
+  }
+  .hbox.checked { background: var(--mint-dark); border-color: var(--mint-dark); color: white; }
+  .hlabel { font-size: 14px; line-height: 1.3; }
+
+  /* PROGRESS */
+  .prog-wrap { background: var(--cream); border-radius: 20px; height: 10px; margin-top: 8px; overflow: hidden; }
+  .prog-bar { height: 100%; border-radius: 20px; background: linear-gradient(to right, var(--mint-dark), var(--purple)); transition: width 0.4s; }
+  .prog-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--light); margin-top: 4px; font-weight: 600; }
+
+  /* SUIVI */
+  .measure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .mfield label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); display: block; margin-bottom: 5px; }
+  .mfield input, .mfield select {
+    width: 100%; padding: 10px 12px;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    background: var(--cream); font-family: 'Nunito', sans-serif;
+    font-size: 15px; color: var(--charcoal); outline: none; text-align: center;
+  }
+  .mfield input:focus { border-color: var(--purple); }
+  .input-full { margin-bottom: 12px; }
+  .input-full label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); display: block; margin-bottom: 5px; }
+  .input-full input {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    background: var(--cream); font-family: 'Nunito', sans-serif;
+    font-size: 14px; color: var(--charcoal); outline: none;
+  }
+  .input-full input:focus { border-color: var(--purple); }
+
+  .history-entry {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; padding: 11px 0;
+    border-bottom: 1px solid var(--border); gap: 10px;
+  }
+  .history-entry:last-child { border-bottom: none; }
+  .h-date { font-size: 10px; font-weight: 700; color: var(--light); flex-shrink: 0; padding-top: 3px; }
+  .h-chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; flex: 1; }
+  .h-chip { font-size: 10px; font-weight: 600; background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 3px 8px; }
+  .del-btn { background: none; border: none; color: var(--light); cursor: pointer; font-size: 13px; flex-shrink: 0; }
+  .del-btn:hover { color: var(--rose-dark); }
+
+  /* BTN */
+  .btn {
+    display: block; width: 100%; padding: 13px;
+    border: none; border-radius: 30px; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-size: 14px;
+    font-weight: 700; transition: all 0.2s; margin-bottom: 10px;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--purple), var(--rose-dark)); color: white; }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-secondary { background: white; border: 2px dashed var(--border); color: var(--mid); }
+  .btn-secondary:hover { border-color: var(--purple); color: var(--purple); }
+
+  .note {
+    font-size: 12px; color: var(--mid); font-style: italic;
+    padding: 10px 14px; background: var(--warning-bg);
+    border-radius: 8px; border-left: 3px solid var(--warning);
+    margin: 10px 0; line-height: 1.5;
+  }
+  .note-mint {
+    font-size: 12px; color: #2E6B4A; font-style: italic;
+    padding: 10px 14px; background: #E8F5EF;
+    border-radius: 8px; border-left: 3px solid var(--mint-dark);
+    margin: 10px 0; line-height: 1.5;
+  }
+
+  /* DOULEUR */
+  .pain-zone {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px; background: #FFF5F5;
+    border-radius: 12px; margin-bottom: 10px;
+    border: 1px solid #FCCACA;
+  }
+  .pain-icon { font-size: 24px; flex-shrink: 0; }
+  .pain-zone h4 { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: #8B2020; margin-bottom: 4px; }
+  .pain-zone p { font-size: 12px; color: #7A3030; line-height: 1.4; }
+
+  /* SEMAINES */
+  .week-badge {
+    display: inline-block; padding: 4px 12px;
+    border-radius: 20px; font-size: 11px; font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .wb-1 { background: #FFF8E1; color: #8B6914; }
+  .wb-2 { background: #E8F5EF; color: var(--mint-dark); }
+  .wb-3 { background: var(--lavender); color: var(--purple-dark); }
+
+  /* EXPORT */
+  .export-area { position: relative; }
+  .export-area input[type=file] {
+    position: absolute; inset: 0; opacity: 0;
+    cursor: pointer; width: 100%; height: 100%;
+  }
+
+  /* DAILY DASHBOARD */
+  .today-hero {
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--rose-dark) 100%);
+    border-radius: 20px; padding: 24px 20px 20px;
+    color: white; margin-bottom: 16px;
+    position: relative; overflow: hidden;
+  }
+  .today-hero::after {
+    content: ''; position: absolute;
+    right: -20px; top: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .today-date {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    opacity: 0.75; margin-bottom: 6px;
+  }
+  .today-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700; margin-bottom: 4px;
+  }
+  .today-sub { font-size: 13px; opacity: 0.8; }
+
+  .day-tasks { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .task-block {
+    background: white; border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .task-block-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .task-block-icon {
+    width: 32px; height: 32px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .task-block-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 700; flex: 1;
+  }
+  .task-block-time {
+    font-size: 11px; font-weight: 700;
+    color: var(--light); font-family: 'Nunito', sans-serif;
+  }
+  .task-items { padding: 4px 0; }
+  .task-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 16px; border-bottom: 1px solid rgba(123,94,167,0.07);
+    cursor: pointer;
+  }
+  .task-item:last-child { border-bottom: none; }
+  .task-cb {
+    width: 20px; height: 20px; border-radius: 5px;
+    border: 2px solid var(--border); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; transition: all 0.15s; margin-top: 1px;
+  }
+  .task-cb.done { background: var(--mint-dark); border-color: var(--mint-dark); color: white; }
+  .task-text { font-size: 13px; line-height: 1.4; flex: 1; }
+  .task-tag {
+    font-size: 10px; font-weight: 700; padding: 2px 7px;
+    border-radius: 10px; flex-shrink: 0; margin-top: 2px;
+  }
+  .tt-sport { background: #E8F5EF; color: var(--mint-dark); }
+  .tt-kine  { background: var(--lavender); color: var(--purple-dark); }
+  .tt-food  { background: #FFF8E1; color: #8B6914; }
+  .tt-meno  { background: #FDEEF2; color: var(--rose-dark); }
+
+  .day-progress-wrap {
+    background: white; border-radius: 14px;
+    border: 1px solid var(--border); padding: 16px;
+    margin-bottom: 16px;
+  }
+  .day-prog-label {
+    display: flex; justify-content: space-between;
+    font-size: 12px; font-weight: 700; color: var(--mid);
+    margin-bottom: 8px;
+  }
+  .day-prog-bar-bg { background: var(--cream); border-radius: 20px; height: 10px; overflow: hidden; }
+  .day-prog-bar { height: 100%; border-radius: 20px; background: linear-gradient(to right, var(--mint-dark), var(--purple)); transition: width 0.4s; }
+  .day-msg { font-size: 12px; color: var(--mid); font-style: italic; margin-top: 8px; text-align: center; }
+
+  /* KINE SECTION */
+  .kine-card {
+    background: linear-gradient(135deg, #EDE7F6, #E8EAF6);
+    border: 1px solid #C5CAE9; border-radius: 14px;
+    padding: 16px; margin-bottom: 10px;
+  }
+  .kine-card h3 { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: #303F9F; margin-bottom: 8px; }
+  .kine-card p { font-size: 13px; color: #3949AB; line-height: 1.5; }
+
+  /* RECIPES */
+  .recipe-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .rtab {
+    padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    background: white; color: var(--mid); transition: all 0.15s;
+  }
+  .rtab.active { background: var(--purple); color: white; border-color: var(--purple); }
+
+  .recipe-grid { display: none; }
+  .recipe-grid.active { display: flex; flex-direction: column; gap: 12px; }
+
+  .recipe-card {
+    background: white; border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(123,94,167,0.06);
+  }
+  .recipe-header {
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 10px;
+  }
+  .recipe-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700;
+  }
+  .recipe-kcal {
+    background: var(--charcoal); color: white;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px; flex-shrink: 0;
+    font-family: 'Nunito', sans-serif;
+  }
+  .recipe-meta {
+    display: flex; gap: 10px; padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rmeta { font-size: 11px; font-weight: 700; color: var(--light); }
+  .recipe-body { padding: 14px 16px; }
+  .recipe-body h4 {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--mid); margin-bottom: 8px;
+  }
+  .recipe-body ul { list-style: none; margin-bottom: 12px; }
+  .recipe-body ul li {
+    font-size: 13px; padding: 3px 0;
+    display: flex; align-items: flex-start; gap: 6px;
+  }
+  .recipe-body ul li::before { content: '·'; color: var(--purple); font-size: 18px; line-height: 1; flex-shrink: 0; }
+  .recipe-steps ol { padding-left: 0; list-style: none; counter-reset: steps; }
+  .recipe-steps ol li {
+    font-size: 13px; padding: 5px 0; padding-left: 24px;
+    position: relative; line-height: 1.4; color: var(--mid);
+    counter-increment: steps;
+    border-bottom: 1px solid rgba(123,94,167,0.07);
+  }
+  .recipe-steps ol li:last-child { border-bottom: none; }
+  .recipe-steps ol li::before {
+    content: counter(steps);
+    position: absolute; left: 0;
+    width: 18px; height: 18px;
+    background: var(--lavender); color: var(--purple-dark);
+    border-radius: 50%; font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    top: 6px;
+  }
+  .recipe-toggle {
+    width: 100%; padding: 10px;
+    background: none; border: none; border-top: 1px solid var(--border);
+    font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700;
+    color: var(--purple); cursor: pointer; transition: background 0.15s;
+  }
+  .recipe-toggle:hover { background: var(--cream); }
+  .recipe-detail { display: none; }
+  .recipe-detail.open { display: block; }
+
+  .allergy-banner {
+    background: #FFF3E8; border: 1px solid #F0C090;
+    border-left: 4px solid var(--warning);
+    border-radius: 10px; padding: 10px 14px;
+    font-size: 12px; color: #7A4A20; font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .meal-day-tag {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--light);
+    padding: 14px 16px 0; display: block;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <button class="active" onclick="show('accueil')">🏠 Aujourd'hui</button>
+  <button onclick="show('mouvement')">🚶 Mouvement</button>
+  <button onclick="show('nutrition')">🥗 Nutrition</button>
+  <button onclick="show('recettes')">🍽️ Recettes</button>
+  <button onclick="show('menopause')">🌸 Ménopause</button>
+  <button onclick="show('tracker')">✅ Tracker</button>
+  <button onclick="show('suivi')">📊 Suivi</button>
+</nav>
+
+<!-- ACCUEIL = DASHBOARD DU JOUR -->
+<div id="accueil" class="section active">
+
+  <div class="today-hero">
+    <div class="today-date" id="today-date-str"></div>
+    <div class="today-day" id="today-day-name"></div>
+    <div class="today-sub" id="today-sub"></div>
+  </div>
+
+  <!-- Progression du jour -->
+  <div class="day-progress-wrap">
+    <div class="day-prog-label">
+      <span>Ma journée</span>
+      <span id="dash-pct">0%</span>
+    </div>
+    <div class="day-prog-bar-bg">
+      <div class="day-prog-bar" id="dash-bar" style="width:0%"></div>
+    </div>
+    <div class="day-msg" id="dash-msg">Commence ta première tâche du jour 🌱</div>
+  </div>
+
+  <!-- Tâches dynamiques par jour -->
+  <div class="day-tasks" id="day-tasks-container"></div>
+
+  <!-- Kiné ischio -->
+  <div class="kine-card">
+    <h3>🦵 Kiné ischio-jambier — Chaque jour</h3>
+    <p>Exercices prescrits par ton kiné à faire quotidiennement. Si douleur ou inconfort, arrête et contacte ton kiné.</p>
+    <ul class="nice-list" style="margin-top:10px;">
+      <li><span class="bullet b-purple" style="background:#EDE7F6;color:#303F9F;">1</span>Contraction isométrique ischio (allongée) — 10×10 sec</li>
+      <li><span class="bullet b-purple" style="background:#EDE7F6;color:#303F9F;">2</span>Pont fessier lent (jambe gauche d'abord) — 3×12</li>
+      <li><span class="bullet b-purple" style="background:#EDE7F6;color:#303F9F;">3</span>Étirement doux ischio couché (jambe tendue au mur) — 3×30 sec côté gauche seulement</li>
+      <li><span class="bullet b-purple" style="background:#EDE7F6;color:#303F9F;">4</span>Marche lente 5–10 min pour échauffer avant</li>
+    </ul>
+    <p style="font-size:12px;color:#5C35A8;margin-top:8px;font-weight:600;">⚠️ Reprise ischio droit uniquement sur validation kiné</p>
+  </div>
+
+  <!-- Rappel recette du jour -->
+  <div class="card" id="recipe-of-day">
+    <div class="card-header">
+      <div class="card-icon" style="background:#FFF8E1;font-size:18px;">🍽️</div>
+      <div><div class="card-tag">Idée repas du jour</div><h2 id="recipe-day-title">Chargement...</h2></div>
+    </div>
+    <p id="recipe-day-desc" style="font-size:13px;color:var(--mid);line-height:1.5;"></p>
+    <p style="font-size:11px;font-weight:700;color:var(--light);margin-top:8px;" id="recipe-day-kcal"></p>
+  </div>
+
+</div>
+
+<!-- MOUVEMENT -->
+<div id="mouvement" class="section">
+  <div class="hero">
+    <div class="hero-emoji">🚶‍♀️</div>
+    <h1>Mouvement</h1>
+    <p>Doux, progressif, sans douleur</p>
+  </div>
+
+  <div class="note">
+    🐢 La règle d'or : commencer TRÈS doucement. Mieux vaut faire moins et tenir sur la durée que trop faire et se blesser. Chaque pas compte.
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-warning">🌱</div>
+      <div><div class="card-tag">Semaines 1 à 4</div><h2>Phase 1 — Réveil en douceur</h2></div>
+    </div>
+    <span class="week-badge wb-1">Objectif : bouger chaque jour</span>
+
+    <div style="margin-bottom:12px;">
+      <p style="font-size:13px;color:var(--mid);margin-bottom:10px;">Programme très léger pour habituer le corps au mouvement sans le choquer.</p>
+    </div>
+
+    <div class="week-row" onclick="toggleDay('p1mon')">
+      <span class="day-name">Lundi</span>
+      <span class="day-work">Marche + Mobilité douce</span>
+    </div>
+    <div class="day-detail" id="detail-p1mon">
+      <p style="font-size:12px;color:var(--mint-dark);font-weight:700;margin-bottom:8px;">MARCHE (10–15 min terrain plat)</p>
+      <p style="font-size:13px;color:var(--mid);margin-bottom:12px;">Rythme confortable — tu dois pouvoir parler sans être essoufflée.</p>
+      <p style="font-size:12px;color:var(--purple);font-weight:700;margin-bottom:8px;">MOBILITÉ ASSISE (10 min)</p>
+      <ul class="ex-list">
+        <li>Rotations chevilles <span class="sets">10 × chaque sens</span></li>
+        <li>Flexions / extensions orteils <span class="sets">10 ×</span></li>
+        <li>Rotations poignets <span class="sets">10 × chaque sens</span></li>
+        <li>Roulements d'épaules <span class="sets">10 ×</span></li>
+        <li>Rotations de la tête lentes <span class="sets">5 × chaque</span></li>
+      </ul>
+    </div>
+
+    <div class="week-row" onclick="toggleDay('p1tue')">
+      <span class="day-name">Mardi</span>
+      <span class="day-work">Repos actif — étirements doux</span>
+    </div>
+    <div class="day-detail" id="detail-p1tue">
+      <ul class="ex-list">
+        <li>Chat-vache (à 4 pattes sur avant-bras) <span class="sets">10 ×</span></li>
+        <li>Étirement fessier allongé (jambe gauche only) <span class="sets">30 sec</span></li>
+        <li>Rotation thoracique assise <span class="sets">8 × chaque</span></li>
+        <li>Respiration abdominale <span class="sets">5 min</span></li>
+      </ul>
+      <p class="note">⚠️ Pas d'étirement ischio-jambier droit pendant 3 mois minimum.</p>
+    </div>
+
+    <div class="week-row" onclick="toggleDay('p1wed')">
+      <span class="day-name">Mercredi</span>
+      <span class="day-work">Marche + Renfo très léger</span>
+    </div>
+    <div class="day-detail" id="detail-p1wed">
+      <p style="font-size:12px;color:var(--mint-dark);font-weight:700;margin-bottom:8px;">MARCHE (15 min)</p>
+      <p style="font-size:12px;color:var(--purple);font-weight:700;margin:10px 0 8px;">RENFORCEMENT ASSIS / ALLONGÉ</p>
+      <ul class="ex-list">
+        <li>Serrage fessiers allongé <span class="sets">3×15</span></li>
+        <li>Relevé de jambe tendue (gauche seulement) <span class="sets">3×10</span></li>
+        <li>Planche sur genoux (avant-bras) <span class="sets">3×20 sec</span></li>
+        <li>Respiration diaphragmatique <span class="sets">5 min</span></li>
+      </ul>
+    </div>
+
+    <div class="week-row" onclick="toggleDay('p1thu')">
+      <span class="day-name">Jeudi</span>
+      <span class="day-work">Repos complet ou marche légère</span>
+    </div>
+    <div class="day-detail" id="detail-p1thu">
+      <p style="font-size:14px;color:var(--mid);">Journée de récupération. Une courte marche de 10 min si tu te sens bien, sinon repos total. Écoute ton corps.</p>
+    </div>
+
+    <div class="week-row" onclick="toggleDay('p1fri')">
+      <span class="day-name">Vendredi</span>
+      <span class="day-work">Marche + Aquagym si possible</span>
+    </div>
+    <div class="day-detail" id="detail-p1fri">
+      <p style="font-size:13px;color:var(--mid);margin-bottom:10px;">L'eau est ton alliée : elle soulage les genoux, protège les articulations, et est idéale pour l'hypertension.</p>
+      <ul class="ex-list">
+        <li>Marche dans l'eau (piscine) <span class="sets">20 min</span></li>
+        <li>OU marche extérieure terrain plat <span class="sets">15–20 min</span></li>
+      </ul>
+      <p class="note-mint">💧 L'aquagym ou la natation douce sont parfaits pour ta situation. Si tu peux y aller 1–2x/semaine, c'est idéal.</p>
+    </div>
+
+    <div class="week-row" onclick="toggleDay('p1sat')">
+      <span class="day-name">Samedi</span>
+      <span class="day-work">Yoga chaise / Tai Chi doux</span>
+    </div>
+    <div class="day-detail" id="detail-p1sat">
+      <p style="font-size:13px;color:var(--mid);margin-bottom:10px;">Cherche sur YouTube "yoga sur chaise débutante" ou "tai chi doux seniors". 20–30 min. Parfait pour la tension, les mains et la mobilité.</p>
+      <ul class="ex-list">
+        <li>Yoga chaise YouTube <span class="sets">20–30 min</span></li>
+        <li>OU Tai Chi doux <span class="sets">20 min</span></li>
+      </ul>
+    </div>
+
+    <div class="week-row" onclick="toggleDay('p1sun')">
+      <span class="day-name">Dimanche</span>
+      <span class="day-work">Repos & bien-être</span>
+    </div>
+    <div class="day-detail" id="detail-p1sun">
+      <ul class="nice-list">
+        <li><span class="bullet b-purple">✓</span>Bain chaud avec sel d'Epsom (magnésium) pour les mains et les jambes</li>
+        <li><span class="bullet b-purple">✓</span>Auto-massage des mains (huile de ricin tiède)</li>
+        <li><span class="bullet b-purple">✓</span>Méditation ou respiration 4-7-8 pour le sommeil</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-mint">🌿</div>
+      <div><div class="card-tag">Semaines 5 à 8</div><h2>Phase 2 — On intensifie doucement</h2></div>
+    </div>
+    <span class="week-badge wb-2">Objectif : 20–30 min de marche/jour</span>
+    <ul class="nice-list">
+      <li><span class="bullet b-mint">↑</span>Marche passe à 20–30 min par session</li>
+      <li><span class="bullet b-mint">↑</span>Ajout de renforcement debout (appui sur chaise)</li>
+      <li><span class="bullet b-mint">↑</span>Squats partiels (juste fléchir légèrement les genoux)</li>
+      <li><span class="bullet b-mint">↑</span>Introduction du vélo elliptique doux si disponible</li>
+      <li><span class="bullet b-purple">✓</span>Yoga / pilates adapté 2× par semaine</li>
+    </ul>
+    <p class="note">Ne passe à la phase 2 que si la phase 1 est confortable sans douleur pendant 2 semaines consécutives.</p>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-purple">✨</div>
+      <div><div class="card-tag">Semaines 9 à 12</div><h2>Phase 3 — Consolidation</h2></div>
+    </div>
+    <span class="week-badge wb-3">Objectif : 30–45 min d'activité/jour</span>
+    <ul class="nice-list">
+      <li><span class="bullet b-purple">↑</span>Marche rapide ou Nordic walking (bâtons)</li>
+      <li><span class="bullet b-purple">↑</span>Vélo stationnaire 20 min (résistance légère)</li>
+      <li><span class="bullet b-purple">↑</span>Renforcement avec petits élastiques</li>
+      <li><span class="bullet b-purple">↑</span>Piscine 2× par semaine idéalement</li>
+    </ul>
+    <p class="note-mint">🎯 À ce stade, l'ischio-jambier devrait être suffisamment cicatrisé. Reprise des étirements légers avec validation du kiné.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-rose">🚭</div>
+      <div><div class="card-tag">Tabac</div><h2>L'obstacle principal</h2></div>
+    </div>
+    <p style="font-size:14px;color:var(--mid);line-height:1.5;margin-bottom:12px;">Le tabac aggrave l'hypertension, ralentit la cicatrisation de l'ischio-jambier, amplifie l'inflammation des mains et perturbe le sommeil. Ce n'est pas un jugement — c'est juste la réalité médicale.</p>
+    <ul class="nice-list">
+      <li><span class="bullet b-rose">→</span>Parler à ton médecin des substituts (patch, gomme, Champix)</li>
+      <li><span class="bullet b-rose">→</span>Chaque cigarette en moins = tension qui baisse</li>
+      <li><span class="bullet b-rose">→</span>La marche aide à réduire l'envie de fumer</li>
+      <li><span class="bullet b-rose">→</span>Tabac Infoservice : 3989 (gratuit)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- NUTRITION -->
+<div id="nutrition" class="section">
+  <div class="hero">
+    <div class="hero-emoji">🥗</div>
+    <h1>Nutrition</h1>
+    <p>Anti-inflammatoire · Tension · Ménopause</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-purple">📊</div>
+      <div><div class="card-tag">Objectif calorique</div><h2>Déficit très doux</h2></div>
+    </div>
+    <div style="background:var(--charcoal);border-radius:12px;padding:18px;color:white;margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
+        <span style="font-size:12px;opacity:0.7;">Métabolisme de base</span>
+        <span style="font-family:'Playfair Display',serif;font-size:18px;color:#A8D5C2;">~1 480 kcal</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
+        <span style="font-size:12px;opacity:0.7;">TDEE (très sédentaire)</span>
+        <span style="font-family:'Playfair Display',serif;font-size:18px;color:#A8D5C2;">~1 780 kcal</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;">
+        <span style="font-size:12px;opacity:0.7;">Objectif (déficit 10–12%)</span>
+        <span style="font-family:'Playfair Display',serif;font-size:18px;color:#E8A882;">~1 600 kcal</span>
+      </div>
+    </div>
+    <p class="note">Pas de restriction sévère — surtout en ménopause. L'objectif est la durabilité, pas la vitesse.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-mint">🍽️</div>
+      <div><div class="card-tag">Priorités</div><h2>Comment manger</h2></div>
+    </div>
+    <ul class="nice-list">
+      <li><span class="bullet b-mint">✓</span><div><strong>Protéines à chaque repas</strong> — préservent le muscle, réduisent la faim (œufs, poisson, légumineuses, yaourt grec)</div></li>
+      <li><span class="bullet b-mint">✓</span><div><strong>Anti-inflammatoire</strong> — oméga-3, curcuma, gingembre, baies, légumes colorés</div></li>
+      <li><span class="bullet b-mint">✓</span><div><strong>Peu de sel</strong> — max 5g/jour pour l'hypertension (éviter charcuterie, plats préparés, fromages très salés)</div></li>
+      <li><span class="bullet b-mint">✓</span><div><strong>Magnésium</strong> — chocolat noir 70%+, amandes, épinards, légumineuses (aide le sommeil et les bouffées de chaleur)</div></li>
+      <li><span class="bullet b-mint">✓</span><div><strong>Phytoestrogènes</strong> — graines de lin, soja bio, légumineuses (atténuent les bouffées)</div></li>
+      <li><span class="bullet b-mint">✓</span><div><strong>2L d'eau / jour</strong> — aide tension, articulations, et bouffées de chaleur</div></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-mint">✅</div>
+      <div><div class="card-tag">À favoriser</div><h2>Aliments alliés</h2></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:700;color:var(--mid);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;">Protéines</p>
+    <div class="food-chips">
+      <span class="chip chip-purple">Saumon / Sardines</span>
+      <span class="chip chip-purple">Œufs bio</span>
+      <span class="chip chip-purple">Poulet / Dinde</span>
+      <span class="chip chip-purple">Lentilles / Pois chiches</span>
+      <span class="chip chip-purple">Yaourt grec</span>
+      <span class="chip chip-purple">Tofu / Tempeh</span>
+    </div>
+
+    <p style="font-size:12px;font-weight:700;color:var(--mid);margin:14px 0 8px;text-transform:uppercase;letter-spacing:0.08em;">Anti-inflammatoires</p>
+    <div class="food-chips">
+      <span class="chip chip-mint">Curcuma + poivre</span>
+      <span class="chip chip-mint">Gingembre frais</span>
+      <span class="chip chip-mint">Myrtilles / Cerises</span>
+      <span class="chip chip-mint">Brocoli / Chou</span>
+      <span class="chip chip-mint">Huile olive froide</span>
+      <span class="chip chip-mint">Noix du Brésil</span>
+      <span class="chip chip-mint">Thé vert</span>
+    </div>
+
+    <p style="font-size:12px;font-weight:700;color:var(--mid);margin:14px 0 8px;text-transform:uppercase;letter-spacing:0.08em;">Pour la tension</p>
+    <div class="food-chips">
+      <span class="chip chip-rose">Banane (potassium)</span>
+      <span class="chip chip-rose">Betterave</span>
+      <span class="chip chip-rose">Épinards</span>
+      <span class="chip chip-rose">Avocat</span>
+      <span class="chip chip-rose">Ail frais</span>
+      <span class="chip chip-rose">Hibiscus (tisane)</span>
+    </div>
+
+    <p style="font-size:12px;font-weight:700;color:var(--mid);margin:14px 0 8px;text-transform:uppercase;letter-spacing:0.08em;">Pour la ménopause</p>
+    <div class="food-chips">
+      <span class="chip chip-gold">Graines de lin moulues</span>
+      <span class="chip chip-gold">Soja bio</span>
+      <span class="chip chip-gold">Sauge (tisane)</span>
+      <span class="chip chip-gold">Houblon (tisane)</span>
+      <span class="chip chip-gold">Amandes</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-rose">🚫</div>
+      <div><div class="card-tag">À réduire</div><h2>Les ennemis</h2></div>
+    </div>
+    <ul class="nice-list">
+      <li><span class="bullet b-red">✗</span><div><strong>Sel en excès</strong> — aggrave l'hypertension (charcuterie, fromages, plats préparés, chips)</div></li>
+      <li><span class="bullet b-red">✗</span><div><strong>Alcool</strong> — aggrave les bouffées de chaleur, perturbe le sommeil, élève la tension</div></li>
+      <li><span class="bullet b-red">✗</span><div><strong>Caféine après 14h</strong> — perturbe le sommeil et amplifie les bouffées</div></li>
+      <li><span class="bullet b-red">✗</span><div><strong>Sucres rapides</strong> — pics glycémiques = inflammation + prise de poids hormonale</div></li>
+      <li><span class="bullet b-red">✗</span><div><strong>Plats épicés</strong> — déclencheurs de bouffées de chaleur</div></li>
+      <li><span class="bullet b-red">✗</span><div><strong>Ultra-transformés</strong> — inflammatoires, riches en sel, mauvais pour les articulations</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- MÉNOPAUSE -->
+<div id="menopause" class="section">
+  <div class="hero">
+    <div class="hero-emoji">🌸</div>
+    <h1>Ménopause</h1>
+    <p>Bouffées · Sommeil · Bien-être</p>
+  </div>
+
+  <div class="meno-tip">
+    <h3>🌡️ Bouffées de chaleur — Protocole d'urgence</h3>
+    <p>Quand ça arrive : respire lentement par le nez (4 sec), expire par la bouche (6 sec). Passe un gant froid sur la nuque. Éventre ton col. Ça dure 2–5 min — ça passe.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-purple">🌙</div>
+      <div><div class="card-tag">Sommeil</div><h2>Protocole nuit</h2></div>
+    </div>
+    <ul class="nice-list">
+      <li><span class="bullet b-purple">✓</span>Chambre fraîche — 16–18°C idéalement (open window)</li>
+      <li><span class="bullet b-purple">✓</span>Draps en coton ou bambou (évacuent la chaleur)</li>
+      <li><span class="bullet b-purple">✓</span>Bouillotte froide ou compresse froide sur la nuque</li>
+      <li><span class="bullet b-purple">✓</span>Tisane valériane + houblon 30 min avant lit</li>
+      <li><span class="bullet b-purple">✓</span>Respiration 4-7-8 : inspire 4 sec, retiens 7, expire 8</li>
+      <li><span class="bullet b-purple">✓</span>Magnésium glycinate 300mg le soir</li>
+      <li><span class="bullet b-purple">✓</span>Pas d'écrans 1h avant le coucher</li>
+      <li><span class="bullet b-red">✗</span>Pas d'alcool le soir — multiplie les bouffées nocturnes</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-rose">🌿</div>
+      <div><div class="card-tag">Plantes</div><h2>Compléments naturels</h2></div>
+    </div>
+    <p class="note">Parle-en à ton médecin avant de commencer, surtout avec l'hypertension.</p>
+    <ul class="nice-list">
+      <li><span class="bullet b-rose">→</span><div><strong>Actée à grappes noires (Remifemin)</strong> — réduit les bouffées de chaleur, études cliniques positives</div></li>
+      <li><span class="bullet b-rose">→</span><div><strong>Sauge officinale</strong> — tisane ou gélules, reconnue pour les sueurs nocturnes</div></li>
+      <li><span class="bullet b-rose">→</span><div><strong>Magnésium glycinate</strong> — sommeil, crampes, humeur, bouffées</div></li>
+      <li><span class="bullet b-rose">→</span><div><strong>Vitamine D3 + K2</strong> — os (risque d'ostéoporose en ménopause), immunité</div></li>
+      <li><span class="bullet b-rose">→</span><div><strong>Oméga-3</strong> — inflammation mains, tension artérielle, humeur</div></li>
+      <li><span class="bullet b-rose">→</span><div><strong>Mélatonine 0.5–1mg</strong> — si problèmes d'endormissement (pas de dépendance)</div></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-purple">🧠</div>
+      <div><div class="card-tag">Mental</div><h2>Gérer les émotions</h2></div>
+    </div>
+    <p style="font-size:14px;color:var(--mid);line-height:1.5;margin-bottom:12px;">La ménopause peut amplifier anxiété, irritabilité et brouillard mental. C'est hormonal, pas "dans la tête".</p>
+    <ul class="nice-list">
+      <li><span class="bullet b-purple">✓</span>10 min de lumière matinale — régule le cortisol et l'humeur</li>
+      <li><span class="bullet b-purple">✓</span>Cohérence cardiaque 3× par jour (app Respirelax)</li>
+      <li><span class="bullet b-purple">✓</span>Journal de gratitude le soir — 3 choses positives</li>
+      <li><span class="bullet b-purple">✓</span>Sortir de la chambre pour travailler si possible</li>
+      <li><span class="bullet b-purple">✓</span>Connexion sociale — isolement amplifie les symptômes</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-warning">🩺</div>
+      <div><div class="card-tag">Médecin</div><h2>Questions à poser</h2></div>
+    </div>
+    <ul class="nice-list">
+      <li><span class="bullet b-gold">?</span>THS (Traitement Hormonal Substitutif) — les bénéfices/risques dans ma situation</li>
+      <li><span class="bullet b-gold">?</span>Bilan osseux (densitométrie) — risque ostéoporose en ménopause</li>
+      <li><span class="bullet b-gold">?</span>Ajustement du traitement tension avec l'activité physique</li>
+      <li><span class="bullet b-gold">?</span>Kiné pour l'ischio-jambier — reprise des étirements</li>
+      <li><span class="bullet b-gold">?</span>Bilan inflammation mains (rhumatologue si besoin)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TRACKER -->
+<div id="tracker" class="section">
+  <div class="hero">
+    <div class="hero-emoji">✅</div>
+    <h1>Tracker</h1>
+    <p>Mes habitudes du jour</p>
+  </div>
+
+  <div id="tracker-date" style="font-size:13px;color:var(--mid);font-weight:600;text-align:center;margin-bottom:16px;"></div>
+
+  <div class="t-card">
+    <h3>🚶 Mouvement <span class="t-prog" id="p-move">0/4</span></h3>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Je me suis levée et j'ai bougé hors du lit</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Marche ou activité physique du jour</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Exercices de mobilité / étirements doux</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">10 min dehors (lumière naturelle)</span></div>
+  </div>
+
+  <div class="t-card">
+    <h3>🥗 Nutrition <span class="t-prog" id="p-nutri">0/5</span></h3>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Protéines à chaque repas</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">2L d'eau bue dans la journée</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Peu de sel (pas de plats préparés)</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Graines de lin / aliment anti-inflammatoire</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Pas d'alcool aujourd'hui</span></div>
+  </div>
+
+  <div class="t-card">
+    <h3>🌸 Ménopause <span class="t-prog" id="p-meno">0/4</span></h3>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Compléments du soir pris (magnésium...)</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Chambre fraîche préparée pour la nuit</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Pas d'écran 1h avant le coucher</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Cohérence cardiaque / respiration du soir</span></div>
+  </div>
+
+  <div class="t-card">
+    <h3>🚭 Tabac <span class="t-prog" id="p-tabac">0/2</span></h3>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">Moins de cigarettes qu'hier</span></div>
+    <div class="habit" onclick="htoggle(this)"><div class="hbox"></div><span class="hlabel">J'ai remplacé une pause cigarette par une marche</span></div>
+  </div>
+
+  <div class="card" style="margin-top:8px;">
+    <div class="card-tag">Score du jour</div>
+    <h2 id="total-score" style="font-family:'Playfair Display',serif;">0 / 15 habitudes</h2>
+    <div class="prog-wrap"><div class="prog-bar" id="total-bar" style="width:0%"></div></div>
+    <div class="prog-labels"><span>0%</span><span id="pct-label">0%</span></div>
+    <p class="note-mint" id="score-msg" style="margin-top:12px;">Commence par cocher ta première habitude. Chaque petit geste compte 🌱</p>
+  </div>
+
+  <button class="btn btn-secondary" onclick="resetTracker()">Réinitialiser le tracker</button>
+</div>
+
+<!-- SUIVI -->
+<div id="suivi" class="section">
+  <div class="hero">
+    <div class="hero-emoji">📊</div>
+    <h1>Suivi</h1>
+    <p>Poids · Mensurations · Tension</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-purple">📏</div>
+      <div><div class="card-tag">Cette semaine</div><h2>Nouvelles mesures</h2></div>
+    </div>
+    <p class="note">Mesure le matin à jeun, après les toilettes. Même heure chaque semaine (idéalement le lundi matin).</p>
+
+    <div class="input-full" style="margin-top:12px;">
+      <label>Poids (kg)</label>
+      <input type="number" id="inp-poids" placeholder="80.0" step="0.1">
+    </div>
+
+    <div class="measure-grid">
+      <div class="mfield"><label>Tour de taille (cm)</label><input type="number" id="inp-taille" placeholder="—" step="0.5"></div>
+      <div class="mfield"><label>Tour de hanches (cm)</label><input type="number" id="inp-hanches" placeholder="—" step="0.5"></div>
+      <div class="mfield"><label>Tour de poitrine (cm)</label><input type="number" id="inp-poitrine" placeholder="—" step="0.5"></div>
+      <div class="mfield"><label>Tour de cuisse (cm)</label><input type="number" id="inp-cuisse" placeholder="—" step="0.5"></div>
+    </div>
+
+    <div class="input-full">
+      <label>Tension artérielle (ex: 130/85)</label>
+      <input type="text" id="inp-tension" placeholder="ex: 130/85 mmHg">
+    </div>
+
+    <div class="input-full">
+      <label>Douleur genou /10 (0 = aucune)</label>
+      <input type="number" id="inp-douleur" placeholder="0" min="0" max="10">
+    </div>
+
+    <div class="input-full">
+      <label>Qualité du sommeil /5</label>
+      <input type="number" id="inp-sommeil" placeholder="3" min="1" max="5">
+    </div>
+
+    <div class="input-full">
+      <label>Ressenti / note de la semaine</label>
+      <input type="text" id="inp-note" placeholder="Ex : moins de bouffées, j'ai marché 3 jours...">
+    </div>
+
+    <button class="btn btn-primary" onclick="saveMeasure()">💾 Enregistrer cette semaine</button>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-mint">📈</div>
+      <div><div class="card-tag">Historique</div><h2 id="history-title">Mon évolution</h2></div>
+    </div>
+    <div id="history-list">
+      <p style="font-size:14px;color:var(--light);font-style:italic;text-align:center;padding:20px 0;">Aucune mesure encore. À toi de jouer ! 🌱</p>
+    </div>
+  </div>
+
+  <div class="card" id="stats-summary" style="display:none">
+    <div class="card-tag">Depuis le début</div>
+    <h2 style="font-family:'Playfair Display',serif;">Évolution</h2>
+    <div class="stats-row" id="delta-stats"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-warning">💾</div>
+      <div><div class="card-tag">Sauvegarde</div><h2>Mes données</h2></div>
+    </div>
+    <p style="font-size:13px;color:var(--mid);margin-bottom:14px;line-height:1.5;">Exporte toutes tes données pour ne rien perdre. Garde le fichier dans tes photos ou par email.</p>
+    <button class="btn btn-primary" onclick="exportData()">⬇️ Exporter mes données</button>
+    <div class="export-area">
+      <input type="file" accept=".json" onchange="importData(event)">
+      <button class="btn btn-secondary">⬆️ Importer une sauvegarde</button>
+    </div>
+    <p id="import-status" style="font-size:11px;font-weight:700;color:var(--mint-dark);text-align:center;display:none;margin-top:8px;"></p>
+  </div>
+</div>
+
+<!-- RECETTES -->
+<div id="recettes" class="section">
+  <div class="hero">
+    <div class="hero-emoji">🍽️</div>
+    <h1>Recettes</h1>
+    <p>~1600 kcal · Simple · Sans allergènes</p>
+  </div>
+
+  <div class="allergy-banner">⚠️ Zéro curcuma · Zéro gingembre · Zéro sucre ajouté · Sans tofu · Pas de petit-déjeuner</div>
+
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-header">
+      <div class="card-icon ci-purple">📊</div>
+      <div><div class="card-tag">Structure ~1600 kcal/jour</div><h2>Organisation des repas</h2></div>
+    </div>
+    <div style="background:var(--charcoal);border-radius:12px;padding:16px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
+        <span style="font-size:12px;opacity:0.7;">☕ Matin (pas de repas)</span>
+        <span style="font-family:'Playfair Display',serif;font-size:16px;color:#A8D5C2;">Café ou thé sans sucre</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
+        <span style="font-size:12px;opacity:0.7;">☀️ Déjeuner (repas principal)</span>
+        <span style="font-family:'Playfair Display',serif;font-size:16px;color:#A8D5C2;">700–800 kcal</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
+        <span style="font-size:12px;opacity:0.7;">🍎 Collation (si faim)</span>
+        <span style="font-family:'Playfair Display',serif;font-size:16px;color:#A8D5C2;">100–150 kcal</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:7px 0;">
+        <span style="font-size:12px;opacity:0.7;">🌙 Dîner léger (avant 20h)</span>
+        <span style="font-family:'Playfair Display',serif;font-size:16px;color:#E8A882;">650–800 kcal</span>
+      </div>
+    </div>
+    <ul class="nice-list">
+      <li><span class="bullet b-mint">✓</span>Protéines à chaque repas — essentiel pour préserver le muscle et couper la faim</li>
+      <li><span class="bullet b-mint">✓</span>Légumes en abondance — remplissent sans calories inutiles</li>
+      <li><span class="bullet b-mint">✓</span>Peu de sel à chaque plat — hypertension</li>
+      <li><span class="bullet b-mint">✓</span>2L d'eau par jour minimum</li>
+      <li><span class="bullet b-mint">✓</span>Perte visée : −0,5 kg/semaine → −15 kg en 6–7 mois</li>
+    </ul>
+  </div>
+
+  <div class="recipe-tabs">
+    <button class="rtab active" onclick="showMeal('dejeuner')">☀️ Déjeuner</button>
+    <button class="rtab" onclick="showMeal('diner')">🌙 Dîner</button>
+    <button class="rtab" onclick="showMeal('collation')">🍎 Collation</button>
+    <button class="rtab" onclick="showMeal('semaine')">📅 Semaine</button>
+  </div>
+
+  <!-- DÉJEUNER -->
+  <div class="recipe-grid active" id="grid-dejeuner">
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Poulet grillé, haricots verts & riz</div><div class="recipe-kcal">~620 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 20 min</span><span class="rmeta">💪 Protéines ✓</span><span class="rmeta">🫀 Tension ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>150g blanc de poulet</li><li>250g haricots verts</li><li>70g riz basmati (sec)</li><li>Ail, thym, huile d'olive, citron</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Cuire le riz à l'eau 12 min.</li>
+          <li>Cuire les haricots verts à la vapeur ou à l'eau.</li>
+          <li>Griller le poulet à la poêle avec ail et thym, 5 min de chaque côté.</li>
+          <li>Servir avec un filet de citron. Pas de sel sur le poulet.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Saumon vapeur, épinards & patate douce</div><div class="recipe-kcal">~680 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 25 min</span><span class="rmeta">🐟 Oméga-3 ✓</span><span class="rmeta">🌸 Ménopause ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>150g pavé de saumon</li><li>Grande poignée d'épinards</li><li>180g patate douce</li><li>Citron, aneth ou persil, huile d'olive</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Cuire la patate douce en dés à la vapeur 15 min.</li>
+          <li>Cuire le saumon à la vapeur ou à la poêle 4 min/côté.</li>
+          <li>Faire tomber les épinards 2 min dans l'huile chaude.</li>
+          <li>Servir avec citron et herbes fraîches.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Bœuf haché maigre, courgettes & riz</div><div class="recipe-kcal">~650 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 20 min</span><span class="rmeta">💪 Protéines ✓</span><span class="rmeta">🩸 Fer ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>150g bœuf haché 5% MG</li><li>2 courgettes</li><li>60g riz basmati (sec)</li><li>1 oignon, ail, persil, huile d'olive</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Cuire le riz à l'eau.</li>
+          <li>Faire revenir oignon et ail 3 min dans l'huile.</li>
+          <li>Ajouter le bœuf haché, émietter, cuire 5 min.</li>
+          <li>Ajouter les courgettes en rondelles, cuire 8 min. Parsemer de persil.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Cabillaud au four, brocoli & lentilles</div><div class="recipe-kcal">~610 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 25 min</span><span class="rmeta">🐟 Maigre ✓</span><span class="rmeta">🌱 Fibres ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>180g filet de cabillaud</li><li>200g brocoli</li><li>100g lentilles vertes cuites (boîte)</li><li>Citron, herbes de Provence, huile d'olive</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Préchauffer four à 190°C.</li>
+          <li>Poser le cabillaud sur plaque avec herbes et citron. Enfourner 15 min.</li>
+          <li>Cuire le brocoli à la vapeur 8 min.</li>
+          <li>Réchauffer les lentilles avec un filet d'huile d'olive.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Escalope de dinde, champignons & quinoa</div><div class="recipe-kcal">~630 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 20 min</span><span class="rmeta">💪 Maigre ✓</span><span class="rmeta">🫀 Tension ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>160g escalope de dinde</li><li>200g champignons de Paris</li><li>70g quinoa (sec)</li><li>Ail, persil, huile d'olive</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Cuire le quinoa dans 2× son volume d'eau (12 min).</li>
+          <li>Faire revenir les champignons avec l'ail 5 min.</li>
+          <li>Griller la dinde à la poêle 4 min/côté.</li>
+          <li>Servir parsemé de persil frais.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Sardines grillées, épinards & pomme de terre</div><div class="recipe-kcal">~590 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 20 min</span><span class="rmeta">🐟 Oméga-3 ✓</span><span class="rmeta">🫀 Tension ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>1 boîte sardines à l'huile d'olive (140g)</li><li>Grande poignée d'épinards</li><li>2 pommes de terre moyennes (200g)</li><li>Citron, persil</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Cuire les pommes de terre à la vapeur 20 min.</li>
+          <li>Faire tomber les épinards 2 min dans une poêle chaude.</li>
+          <li>Servir sardines avec épinards et pommes de terre.</li>
+          <li>Arroser de citron, parsemer de persil.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Poulet rôti, carottes & patate douce</div><div class="recipe-kcal">~660 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 40 min</span><span class="rmeta">💪 Protéines ✓</span><span class="rmeta">🌿 Simple ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>2 cuisses de poulet (sans peau)</li><li>3 carottes</li><li>150g patate douce</li><li>Ail, romarin, huile d'olive</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Préchauffer four à 200°C.</li>
+          <li>Disposer tout sur une plaque avec huile, ail, romarin.</li>
+          <li>Enfourner 35–40 min. Retourner à mi-cuisson.</li>
+          <li>Servir tel quel — plat complet en une seule plaque.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Thon, pois chiches & salade composée</div><div class="recipe-kcal">~580 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 8 min</span><span class="rmeta">⚡ Ultra-rapide ✓</span><span class="rmeta">🐟 Protéines ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>1 boîte thon au naturel (120g égoutté)</li><li>150g pois chiches cuits (boîte, rincés)</li><li>Tomates, concombre, salade verte</li><li>Citron, huile d'olive, herbes</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Rincer les pois chiches.</li>
+          <li>Couper tomates et concombre.</li>
+          <li>Mélanger tout dans un grand bol.</li>
+          <li>Assaisonner citron + huile d'olive. Pas de sel.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <!-- DÎNER -->
+  <div class="recipe-grid" id="grid-diner">
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Velouté de courgette & yaourt grec</div><div class="recipe-kcal">~320 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 20 min</span><span class="rmeta">🌙 Léger ✓</span><span class="rmeta">💪 Protéines ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>2 courgettes moyennes</li><li>1 oignon, 1 gousse d'ail</li><li>500ml bouillon légumes peu salé</li><li>2 c.s. yaourt grec + basilic</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Faire revenir oignon et courgettes 5 min dans l'huile.</li>
+          <li>Couvrir de bouillon, cuire 12 min.</li>
+          <li>Mixer, incorporer le yaourt hors du feu.</li>
+          <li>Servir avec basilic et poivre.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Soupe poireaux & pommes de terre</div><div class="recipe-kcal">~300 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 25 min</span><span class="rmeta">🌙 Classique ✓</span><span class="rmeta">🫀 Tension ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>2 poireaux</li><li>2 pommes de terre moyennes</li><li>600ml bouillon légumes peu salé</li><li>Ciboulette, 1 c.s. crème légère</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Couper poireaux et pommes de terre en morceaux.</li>
+          <li>Faire revenir les poireaux 3 min dans l'huile.</li>
+          <li>Ajouter pommes de terre et bouillon. Cuire 18 min.</li>
+          <li>Mixer, ajouter crème légère et ciboulette.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Blanc de poulet vapeur & haricots verts</div><div class="recipe-kcal">~350 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 20 min</span><span class="rmeta">💪 Protéines ✓</span><span class="rmeta">🌙 Léger ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>140g blanc de poulet</li><li>300g haricots verts</li><li>Citron, herbes de Provence</li><li>1 c.c. huile d'olive</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Cuire le poulet à la vapeur 15 min avec herbes.</li>
+          <li>Cuire les haricots verts à la vapeur 8 min.</li>
+          <li>Servir avec citron et filet d'huile d'olive.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Omelette aux champignons & salade verte</div><div class="recipe-kcal">~370 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 12 min</span><span class="rmeta">💪 Protéines ✓</span><span class="rmeta">⚡ Rapide ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>3 œufs bio</li><li>150g champignons de Paris</li><li>Ail, persil, huile d'olive</li><li>Salade verte + vinaigrette citron</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Faire revenir champignons et ail 4 min dans l'huile.</li>
+          <li>Battre les œufs avec persil. Verser sur les champignons.</li>
+          <li>Cuire à feu doux, plier en deux.</li>
+          <li>Servir avec salade verte.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Soupe de carottes & lentilles corail</div><div class="recipe-kcal">~390 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 25 min</span><span class="rmeta">🌱 Fibres ✓</span><span class="rmeta">💊 Fer ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>3 carottes</li><li>80g lentilles corail sèches</li><li>1 oignon, ail</li><li>700ml bouillon légumes peu salé</li><li>Persil frais</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Faire revenir oignon et carottes coupées 4 min.</li>
+          <li>Ajouter lentilles rincées et bouillon. Cuire 20 min.</li>
+          <li>Mixer partiellement pour texture onctueuse.</li>
+          <li>Parsemer de persil frais.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Maquereau, betterave & concombre</div><div class="recipe-kcal">~410 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 5 min</span><span class="rmeta">🐟 Oméga-3 ✓✓</span><span class="rmeta">⚡ Zéro cuisson ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>1 boîte filets de maquereau à l'huile d'olive</li><li>1 betterave cuite</li><li>½ concombre</li><li>Citron, ciboulette</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Couper betterave et concombre en dés.</li>
+          <li>Disposer les filets de maquereau avec les légumes.</li>
+          <li>Arroser de citron, parsemer de ciboulette.</li>
+          <li>Dîner prêt en 5 minutes !</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Potage brocoli & fromage blanc</div><div class="recipe-kcal">~280 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 20 min</span><span class="rmeta">🌙 Très léger ✓</span><span class="rmeta">🦴 Calcium ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>1 tête de brocoli (400g)</li><li>2 c.s. fromage blanc 0%</li><li>500ml bouillon légumes peu salé</li><li>Noix de muscade, poivre</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Cuire le brocoli dans le bouillon 12 min.</li>
+          <li>Mixer avec le fromage blanc.</li>
+          <li>Assaisonner muscade et poivre. Servir bien chaud.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Thon & haricots blancs en salade</div><div class="recipe-kcal">~420 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 5 min</span><span class="rmeta">⚡ Ultra-rapide ✓</span><span class="rmeta">🌱 Fibres ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>1 boîte thon au naturel</li><li>150g haricots blancs (boîte, rincés)</li><li>Tomates cerises, roquette</li><li>Citron, huile d'olive, herbes</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Rincer et égoutter les haricots blancs.</li>
+          <li>Mélanger thon, haricots, tomates et roquette.</li>
+          <li>Assaisonner citron + huile d'olive.</li>
+          <li>Servir froid ou à température ambiante.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Gratin de chou-fleur léger</div><div class="recipe-kcal">~360 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 30 min</span><span class="rmeta">🌙 Réconfortant ✓</span><span class="rmeta">🦴 Calcium ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir la recette ▾</button>
+      <div class="recipe-detail"><div class="recipe-body">
+        <h4>Ingrédients</h4><ul><li>1 chou-fleur (500g)</li><li>200ml lait demi-écrémé</li><li>30g gruyère râpé</li><li>1 c.s. maïzena, noix de muscade</li></ul>
+        <div class="recipe-steps"><h4>Préparation</h4><ol>
+          <li>Cuire le chou-fleur à la vapeur 10 min.</li>
+          <li>Préparer la béchamel légère : lait + maïzena, faire épaissir.</li>
+          <li>Verser sur le chou-fleur dans un plat, saupoudrer gruyère.</li>
+          <li>Gratiner au four 15 min à 200°C.</li>
+        </ol></div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <!-- COLLATION -->
+  <div class="recipe-grid" id="grid-collation">
+    <p class="note-mint" style="margin-bottom:14px;">Seulement si faim réelle entre les repas. Max 1 collation par jour.</p>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Amandes & tisane d'hibiscus</div><div class="recipe-kcal">~120 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 0 min</span><span class="rmeta">💊 Magnésium ✓</span><span class="rmeta">🫀 Tension ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir ▾</button>
+      <div class="recipe-detail"><div class="recipe-body"><ul><li>15g amandes nature (environ 12 amandes)</li><li>Tisane hibiscus ou camomille sans sucre</li></ul><p style="font-size:13px;color:var(--mid);margin-top:8px;">L'hibiscus aide à faire baisser la tension naturellement. Magnésium pour les bouffées.</p></div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Yaourt grec nature & graines de lin</div><div class="recipe-kcal">~100 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 0 min</span><span class="rmeta">💪 Protéines ✓</span><span class="rmeta">🌸 Ménopause ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir ▾</button>
+      <div class="recipe-detail"><div class="recipe-body"><ul><li>150g yaourt grec 0% nature</li><li>1 c.c. graines de lin moulues</li></ul><p style="font-size:13px;color:var(--mid);margin-top:8px;">Calcium pour les os + protéines rassasiantes. Phytoestrogènes pour les bouffées.</p></div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Légumes croquants & houmous</div><div class="recipe-kcal">~150 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 5 min</span><span class="rmeta">🌱 Fibres ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir ▾</button>
+      <div class="recipe-detail"><div class="recipe-body"><ul><li>Carottes, concombre, céleri en bâtonnets</li><li>2 c.s. houmous nature (sans sel ajouté)</li></ul><p style="font-size:13px;color:var(--mid);margin-top:8px;">Fibres et protéines végétales. Rassasiant sans pic glycémique.</p></div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Œuf dur & tomates cerises</div><div class="recipe-kcal">~100 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 10 min</span><span class="rmeta">💪 Protéines ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir ▾</button>
+      <div class="recipe-detail"><div class="recipe-body"><ul><li>1 œuf dur</li><li>Quelques tomates cerises</li><li>Poivre, herbes fraîches</li></ul><p style="font-size:13px;color:var(--mid);margin-top:8px;">Snack protéiné parfait. Se prépare à l'avance le matin.</p></div></div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-header"><div class="recipe-title">Kéfir nature</div><div class="recipe-kcal">~80 kcal</div></div>
+      <div class="recipe-meta"><span class="rmeta">⏱ 0 min</span><span class="rmeta">🦠 Probiotiques ✓</span><span class="rmeta">🌸 Ménopause ✓</span></div>
+      <button class="recipe-toggle" onclick="toggleRecipe(this)">Voir ▾</button>
+      <div class="recipe-detail"><div class="recipe-body"><ul><li>150ml kéfir nature (sans sucre)</li></ul><p style="font-size:13px;color:var(--mid);margin-top:8px;">Probiotiques pour l'intestin. À prendre dans l'après-midi.</p></div></div>
+    </div>
+
+  </div>
+
+  <!-- SEMAINE -->
+  <div class="recipe-grid" id="grid-semaine">
+    <div class="card">
+      <div class="card-tag">Plan sur 7 jours ~1600 kcal</div>
+      <h2 style="font-family:'Playfair Display',serif;margin-bottom:12px;">Ma semaine type</h2>
+      <div class="allergy-banner">⚠️ Sans curcuma · Sans gingembre · Sans sucre · Pas de petit-déjeuner</div>
+      <div style="margin-bottom:14px;padding:14px;background:var(--cream);border-radius:12px;">
+        <p style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Structure chaque jour</p>
+        <ul class="nice-list">
+          <li><span class="bullet b-gold">☕</span>Matin : café ou thé sans sucre uniquement</li>
+          <li><span class="bullet b-mint">☀️</span>Déjeuner 700–800 kcal (repas principal)</li>
+          <li><span class="bullet b-rose">🍎</span>Collation 100–150 kcal si faim</li>
+          <li><span class="bullet b-purple">🌙</span>Dîner léger 650–800 kcal avant 20h</li>
+        </ul>
+      </div>
+      <div id="week-plan-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Navigation ───────────────────────────────────────────
+  function show(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleDay(day) {
+    const detail = document.getElementById('detail-' + day);
+    const row = detail.previousElementSibling;
+    detail.classList.toggle('open');
+    row.classList.toggle('open-row');
+  }
+
+  // ── Date ─────────────────────────────────────────────────
+  const today = new Date();
+  const todayKey = today.toISOString().split('T')[0];
+  const todayStr = today.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
+  const dateEl = document.getElementById('tracker-date');
+  if (dateEl) dateEl.textContent = todayStr.charAt(0).toUpperCase() + todayStr.slice(1);
+
+  // ── Tracker ──────────────────────────────────────────────
+  const TKEY = 'tracker_' + todayKey;
+
+  function saveState() {
+    const state = [];
+    document.querySelectorAll('.habit').forEach(h => {
+      state.push(h.querySelector('.hbox').classList.contains('checked'));
+    });
+    localStorage.setItem(TKEY, JSON.stringify(state));
+    const keys = Object.keys(localStorage).filter(k => k.startsWith('tracker_'));
+    keys.sort().reverse().slice(7).forEach(k => localStorage.removeItem(k));
+  }
+
+  function loadState() {
+    const saved = localStorage.getItem(TKEY);
+    if (!saved) return;
+    JSON.parse(saved).forEach((v, i) => {
+      const habits = document.querySelectorAll('.habit');
+      if (habits[i] && v) {
+        const b = habits[i].querySelector('.hbox');
+        b.classList.add('checked'); b.textContent = '✓';
+      }
+    });
+  }
+
+  function htoggle(el) {
+    const b = el.querySelector('.hbox');
+    b.classList.toggle('checked');
+    b.textContent = b.classList.contains('checked') ? '✓' : '';
+    updateScore(); saveState();
+  }
+
+  function updateScore() {
+    const groups = [
+      { card: 0, id: 'p-move' },
+      { card: 1, id: 'p-nutri' },
+      { card: 2, id: 'p-meno' },
+      { card: 3, id: 'p-tabac' },
+    ];
+    const cards = document.querySelectorAll('.t-card');
+    let total = 0, max = 15;
+    cards.forEach((card, i) => {
+      const checked = card.querySelectorAll('.hbox.checked').length;
+      const all = card.querySelectorAll('.hbox').length;
+      const prog = card.querySelector('h3 .t-prog');
+      if (prog) prog.textContent = checked + '/' + all;
+      total += checked;
+    });
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('total-score').textContent = total + ' / ' + max + ' habitudes';
+    document.getElementById('total-bar').style.width = pct + '%';
+    document.getElementById('pct-label').textContent = pct + '%';
+    const msgs = [
+      [0, 25, "Commence par cocher ta première habitude. Chaque petit geste compte 🌱"],
+      [26, 55, "Bravo ! Tu avances doucement mais sûrement. 🌿"],
+      [56, 80, "Belle journée ! Ton corps te remercie. 💜"],
+      [81, 100, "Extraordinaire ! Tu prends soin de toi. 🌸✨"]
+    ];
+    const msg = msgs.find(([a, b]) => pct >= a && pct <= b);
+    if (msg) document.getElementById('score-msg').textContent = msg[2];
+  }
+
+  function resetTracker() {
+    if (!confirm("Remettre le tracker à zéro pour aujourd'hui ?")) return;
+    document.querySelectorAll('.hbox').forEach(b => { b.classList.remove('checked'); b.textContent = ''; });
+    updateScore(); saveState();
+  }
+
+  // ── Mesures ──────────────────────────────────────────────
+  function getMeasures() { return JSON.parse(localStorage.getItem('measures_m') || '[]'); }
+
+  function getWeekKey(d) {
+    const t = new Date(d); t.setHours(0,0,0,0);
+    t.setDate(t.getDate() - t.getDay() + 1);
+    return t.toISOString().split('T')[0];
+  }
+
+  function saveMeasure() {
+    const vals = {
+      date: todayKey,
+      dateLabel: today.toLocaleDateString('fr-FR', {day:'numeric', month:'short', year:'numeric'}),
+      poids:    document.getElementById('inp-poids').value,
+      taille:   document.getElementById('inp-taille').value,
+      hanches:  document.getElementById('inp-hanches').value,
+      poitrine: document.getElementById('inp-poitrine').value,
+      cuisse:   document.getElementById('inp-cuisse').value,
+      tension:  document.getElementById('inp-tension').value,
+      douleur:  document.getElementById('inp-douleur').value,
+      sommeil:  document.getElementById('inp-sommeil').value,
+      note:     document.getElementById('inp-note').value,
+    };
+    if (!vals.poids && !vals.taille) { alert('Saisis au moins ton poids.'); return; }
+    const measures = getMeasures();
+    const thisWeek = getWeekKey(today);
+    const idx = measures.findIndex(m => getWeekKey(new Date(m.date)) === thisWeek);
+    if (idx >= 0) {
+      if (!confirm('Entrée déjà présente cette semaine. Remplacer ?')) return;
+      measures[idx] = vals;
+    } else { measures.unshift(vals); }
+    localStorage.setItem('measures_m', JSON.stringify(measures));
+    renderHistory();
+    ['inp-poids','inp-taille','inp-hanches','inp-poitrine','inp-cuisse','inp-tension','inp-douleur','inp-sommeil','inp-note']
+      .forEach(id => document.getElementById(id).value = '');
+    showToast('✓ Mesures enregistrées !');
+  }
+
+  function renderHistory() {
+    const measures = getMeasures();
+    const list = document.getElementById('history-list');
+    if (!measures.length) {
+      list.innerHTML = '<p style="font-size:14px;color:var(--light);font-style:italic;text-align:center;padding:20px 0;">Aucune mesure encore. À toi de jouer ! 🌱</p>';
+      document.getElementById('stats-summary').style.display = 'none';
+      return;
+    }
+    document.getElementById('history-title').textContent = 'Mon évolution (' + measures.length + ' semaine' + (measures.length > 1 ? 's' : '') + ')';
+    list.innerHTML = measures.map((m, i) => {
+      const prev = measures[i + 1];
+      const chips = [
+        m.poids    ? `<span class="h-chip">⚖️ ${m.poids}kg${prev && prev.poids ? ' ' + trendIcon(parseFloat(m.poids), parseFloat(prev.poids)) : ''}</span>` : '',
+        m.taille   ? `<span class="h-chip">Taille ${m.taille}cm</span>` : '',
+        m.hanches  ? `<span class="h-chip">Hanches ${m.hanches}cm</span>` : '',
+        m.tension  ? `<span class="h-chip">🫀 ${m.tension}</span>` : '',
+        m.douleur  ? `<span class="h-chip">🦵 ${m.douleur}/10</span>` : '',
+        m.sommeil  ? `<span class="h-chip">😴 ${m.sommeil}/5</span>` : '',
+      ].filter(Boolean).join('');
+      const noteHtml = m.note ? `<p style="font-size:11px;color:var(--mid);font-style:italic;margin-top:5px;text-align:right;">"${m.note}"</p>` : '';
+      return `<div class="history-entry">
+        <span class="h-date">${m.dateLabel}</span>
+        <div style="flex:1"><div class="h-chips">${chips}</div>${noteHtml}</div>
+        <button class="del-btn" onclick="deleteMeasure(${i})">✕</button>
+      </div>`;
+    }).join('');
+
+    if (measures.length >= 2) {
+      const first = measures[measures.length - 1], last = measures[0];
+      document.getElementById('stats-summary').style.display = 'block';
+      const items = [
+        { label: 'Poids', a: first.poids, b: last.poids, unit: 'kg', lower: true },
+        { label: 'Taille', a: first.taille, b: last.taille, unit: 'cm', lower: true },
+        { label: 'Douleur', a: first.douleur, b: last.douleur, unit: '/10', lower: true },
+      ].filter(x => x.a && x.b);
+      document.getElementById('delta-stats').innerHTML = items.map(item => {
+        const diff = (parseFloat(item.b) - parseFloat(item.a)).toFixed(1);
+        const sign = diff > 0 ? '+' : '';
+        const good = item.lower ? diff <= 0 : diff >= 0;
+        const color = diff == 0 ? 'var(--mid)' : good ? 'var(--mint-dark)' : 'var(--rose-dark)';
+        return `<div class="stat-card"><div class="stat-val" style="color:${color}">${sign}${diff}${item.unit}</div><div class="stat-label">${item.label}</div></div>`;
+      }).join('');
+    }
+  }
+
+  function trendIcon(cur, prev) {
+    if (cur < prev) return '↓';
+    if (cur > prev) return '↑';
+    return '→';
+  }
+
+  function deleteMeasure(i) {
+    if (!confirm('Supprimer cette entrée ?')) return;
+    const m = getMeasures(); m.splice(i, 1);
+    localStorage.setItem('measures_m', JSON.stringify(m));
+    renderHistory();
+  }
+
+  // ── Export / Import ──────────────────────────────────────
+  function exportData() {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i); data[k] = localStorage.getItem(k);
+    }
+    if (!Object.keys(data).length) { alert("Aucune donnée à exporter."); return; }
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'bienetre-maman-' + todayKey + '.json';
+    a.click(); URL.revokeObjectURL(a.href);
+    showToast('✓ Sauvegarde téléchargée !');
+  }
+
+  function importData(e) {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (!confirm('Importer ? Les données actuelles seront remplacées.')) return;
+        localStorage.clear();
+        for (const k in data) localStorage.setItem(k, data[k]);
+        renderHistory(); loadState(); updateScore();
+        const st = document.getElementById('import-status');
+        st.style.display = 'block'; st.textContent = '✓ Données importées !';
+        setTimeout(() => st.style.display = 'none', 3000);
+      } catch { alert('Fichier invalide.'); }
+    };
+    reader.readAsText(file); e.target.value = '';
+  }
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--purple);color:white;padding:11px 22px;border-radius:30px;font-family:"Nunito",sans-serif;font-size:13px;font-weight:700;z-index:999;opacity:0;transition:opacity 0.3s;white-space:nowrap;box-shadow:0 4px 20px rgba(123,94,167,0.4);';
+    t.textContent = msg; document.body.appendChild(t);
+    setTimeout(() => t.style.opacity = '1', 50);
+    setTimeout(() => t.style.opacity = '0', 2500);
+    setTimeout(() => t.remove(), 3000);
+  }
+
+  // ── Recipes ──────────────────────────────────────────────
+  function showMeal(cat) {
+    document.querySelectorAll('.recipe-grid').forEach(g => g.classList.remove('active'));
+    document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+    const grid = document.getElementById('grid-' + cat);
+    if (grid) grid.classList.add('active');
+    event.target.classList.add('active');
+  }
+  function toggleRecipe(btn) {
+    const detail = btn.nextElementSibling;
+    detail.classList.toggle('open');
+    btn.textContent = detail.classList.contains('open') ? 'Masquer ▴' : 'Voir la recette ▾';
+  }
+
+  // ── Daily dashboard ───────────────────────────────────────
+  const dayNames = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const dayIndex = today.getDay();
+  const dateStrEl = document.getElementById('today-date-str');
+  if (dateStrEl) dateStrEl.textContent = today.toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+  const dayNameEl = document.getElementById('today-day-name');
+  if (dayNameEl) dayNameEl.textContent = dayNames[dayIndex];
+
+  const dailyPlans = {
+    1: { sub:'Marche + Kiné + Mobilité', recipe:{title:'Poulet grillé, haricots verts & riz',desc:'Protéines maigres et légumes — repas équilibré pour la journée.',kcal:'620 kcal (déjeuner)'},
+      tasks:[
+        {icon:'🦵',title:'Kiné ischio-jambier',color:'ci-purple',time:'Matin',items:[{text:'Contraction isométrique ischio — 10×10 sec',tag:'kiné'},{text:'Pont fessier lent — 3×12',tag:'kiné'},{text:'Marche légère 5–10 min (échauffement)',tag:'sport'}]},
+        {icon:'🚶',title:'Marche du jour',color:'ci-mint',time:'Après-midi',items:[{text:'Marche terrain plat 15–20 min (rythme confortable)',tag:'sport'},{text:'10 min dehors pour la lumière naturelle',tag:'sport'}]},
+        {icon:'🌙',title:'Soir',color:'ci-rose',time:'Soir',items:[{text:'Magnésium glycinate 300mg',tag:'meno'},{text:'Chambre fraîche préparée',tag:'meno'},{text:'Tisane sauge ou camomille',tag:'meno'}]},
+      ]},
+    2: { sub:'Repos actif + Étirements + Bien-être mains', recipe:{title:'Salade de pois chiches & avocat',desc:'Végétarien, riche en fibres et magnésium, anti-inflammatoire.',kcal:'420 kcal (déjeuner)'},
+      tasks:[
+        {icon:'🤲',title:'Bien-être mains',color:'ci-warning',time:'Matin',items:[{text:'Bain mains eau tiède 10 min (sel Epsom)',tag:'kiné'},{text:'Rotations douces des poignets — 10× chaque sens',tag:'kiné'},{text:'Massage mains huile chaude',tag:'kiné'}]},
+        {icon:'🧘',title:'Mobilité douce',color:'ci-purple',time:'Milieu de journée',items:[{text:'Yoga sur chaise 20 min (YouTube)',tag:'sport'},{text:'Rotation thoracique assise — 8× chaque côté',tag:'kiné'},{text:'Respiration abdominale — 5 min',tag:'meno'}]},
+        {icon:'🌙',title:'Récupération soir',color:'ci-rose',time:'Soir',items:[{text:'Compléments soir (magnésium)',tag:'meno'},{text:'Journal de gratitude — 3 choses positives',tag:'meno'}]},
+      ]},
+    3: { sub:'Renforcement léger + Marche', recipe:{title:'Poulet rôti, brocoli & patate douce',desc:'Protéines et glucides complexes, idéal pour les jours actifs.',kcal:'460 kcal (déjeuner)'},
+      tasks:[
+        {icon:'🦵',title:'Kiné + Renforcement',color:'ci-purple',time:'Matin',items:[{text:'Exercices kiné ischio (programme habituel)',tag:'kiné'},{text:'Serrage fessiers allongée — 3×15',tag:'sport'},{text:'Planche avant-bras sur genoux — 3×20 sec',tag:'sport'}]},
+        {icon:'🚶',title:'Marche',color:'ci-mint',time:'Après-midi',items:[{text:'Marche 20 min terrain plat',tag:'sport'}]},
+        {icon:'🍽️',title:'Alimentation du jour',color:'ci-warning',time:'Journée',items:[{text:'Graines de lin au petit-déj',tag:'food'},{text:'Eau : au moins 2L dans la journée',tag:'food'},{text:'Pas de sel ajouté (tension)',tag:'food'}]},
+      ]},
+    4: { sub:'Repos + Aquagym si possible', recipe:{title:'Soupe lentilles corail & betterave',desc:'Phytoestrogènes, riche en fer et fibres. Excellent pour la ménopause.',kcal:'380 kcal (déjeuner)'},
+      tasks:[
+        {icon:'💧',title:'Aquagym (idéal)',color:'ci-mint',time:'Matin ou après-midi',items:[{text:"Aquagym ou marche dans l'eau 20–30 min",tag:'sport'},{text:'OU marche extérieure 15 min si pas de piscine',tag:'sport'}]},
+        {icon:'🦵',title:'Kiné doux',color:'ci-purple',time:'Matin',items:[{text:'Exercices kiné ischio légers seulement',tag:'kiné'}]},
+        {icon:'🌿',title:'Récupération',color:'ci-rose',time:'Soir',items:[{text:'Cohérence cardiaque 3× (app Respirelax)',tag:'meno'},{text:'Compléments soir',tag:'meno'},{text:'Dîner léger avant 20h',tag:'food'}]},
+      ]},
+    5: { sub:'Marche + Renforcement + Bien-être', recipe:{title:'Saumon en papillote, haricots verts & riz',desc:"Oméga-3 en fin de semaine pour l'inflammation. Léger et rassasiant.",kcal:'480 kcal (déjeuner)'},
+      tasks:[
+        {icon:'🚶',title:'Marche & Mouvement',color:'ci-mint',time:'Matin',items:[{text:'Marche 20–25 min terrain plat',tag:'sport'},{text:'Exercices kiné ischio',tag:'kiné'}]},
+        {icon:'💆',title:'Brossage lymphatique',color:'ci-rose',time:'Avant douche',items:[{text:'Brossage corps à sec 5 min (de bas en haut)',tag:'meno'},{text:'Douche contrastée tiède/fraîche',tag:'meno'}]},
+        {icon:'🌙',title:'Préparation weekend',color:'ci-purple',time:'Soir',items:[{text:'Préparer repas du weekend',tag:'food'},{text:'Compléments soir',tag:'meno'}]},
+      ]},
+    6: { sub:'Yoga / Tai Chi + Bien-être', recipe:{title:'Poulet rôti, brocoli & patate douce',desc:'Bon repas du samedi — facile à préparer.',kcal:'460 kcal (déjeuner)'},
+      tasks:[
+        {icon:'🧘',title:'Yoga sur chaise ou Tai Chi',color:'ci-purple',time:'Matin',items:[{text:'Yoga sur chaise débutante — 25–30 min (YouTube)',tag:'sport'},{text:'OU Tai Chi doux — 20 min',tag:'sport'}]},
+        {icon:'🛁',title:'Bain bien-être',color:'ci-rose',time:'Soir',items:[{text:'Bain tiède sel Epsom 20 min',tag:'meno'},{text:'Auto-massage mains huile tiède',tag:'kiné'},{text:'Tisane relaxante',tag:'meno'}]},
+        {icon:'🌿',title:'Mental',color:'ci-mint',time:'Journée',items:[{text:'10 min dehors pour la lumière',tag:'sport'},{text:'Respiration 4-7-8 avant de dormir',tag:'meno'}]},
+      ]},
+    0: { sub:'Repos complet & récupération', recipe:{title:'Omelette aux légumes & herbes',desc:'Repas simple et protéiné pour finir la semaine en douceur.',kcal:'310 kcal (dîner)'},
+      tasks:[
+        {icon:'☀️',title:'Matin doux',color:'ci-warning',time:'Matin',items:[{text:'Lumière matinale 10 min dehors',tag:'sport'},{text:'Exercices kiné ischio légers',tag:'kiné'},{text:'Petit-déj tranquille sans écran',tag:'food'}]},
+        {icon:'🚶',title:'Marche légère',color:'ci-mint',time:'Après-midi',items:[{text:'Marche courte 10–15 min (plaisir)',tag:'sport'}]},
+        {icon:'📋',title:'Préparation semaine',color:'ci-purple',time:'Soir',items:[{text:'Préparer les courses pour la semaine',tag:'food'},{text:'Compléments soir + coucher tôt',tag:'meno'}]},
+      ]},
+  };
+
+  const tagColors = {sport:'tt-sport',kiné:'tt-kine',food:'tt-food',meno:'tt-meno'};
+  const tagLabels = {sport:'Sport',kiné:'Kiné',food:'Repas',meno:'Ménopause'};
+  const iconBg = {'ci-purple':'background:var(--lavender)','ci-mint':'background:#E8F5EF','ci-rose':'background:#FDEEF2','ci-warning':'background:var(--warning-bg)'};
+
+  function buildDashboard() {
+    const plan = dailyPlans[dayIndex];
+    if (!plan) return;
+    const subEl = document.getElementById('today-sub');
+    if (subEl) subEl.textContent = plan.sub;
+    const rdTitle = document.getElementById('recipe-day-title');
+    const rdDesc = document.getElementById('recipe-day-desc');
+    const rdKcal = document.getElementById('recipe-day-kcal');
+    if (rdTitle) rdTitle.textContent = plan.recipe.title;
+    if (rdDesc) rdDesc.textContent = plan.recipe.desc;
+    if (rdKcal) rdKcal.textContent = '~' + plan.recipe.kcal;
+    const container = document.getElementById('day-tasks-container');
+    if (!container) return;
+    container.innerHTML = '';
+    plan.tasks.forEach(block => {
+      const div = document.createElement('div');
+      div.className = 'task-block';
+      const bg = iconBg[block.color] || 'background:var(--lavender)';
+      div.innerHTML = `<div class="task-block-header"><div class="task-block-icon" style="${bg}">${block.icon}</div><div class="task-block-title">${block.title}</div><div class="task-block-time">${block.time}</div></div><div class="task-items">${block.items.map(item=>`<div class="task-item" onclick="toggleTask(this)"><div class="task-cb"></div><div class="task-text">${item.text}</div><span class="task-tag ${tagColors[item.tag]}">${tagLabels[item.tag]}</span></div>`).join('')}</div>`;
+      container.appendChild(div);
+    });
+    restoreTaskState();
+    updateDashProgress();
+  }
+
+  function toggleTask(el) {
+    const cb = el.querySelector('.task-cb');
+    cb.classList.toggle('done');
+    cb.textContent = cb.classList.contains('done') ? '✓' : '';
+    saveTaskState(); updateDashProgress();
+  }
+
+  function updateDashProgress() {
+    const all = document.querySelectorAll('.task-cb').length;
+    const done = document.querySelectorAll('.task-cb.done').length;
+    const pct = all ? Math.round((done/all)*100) : 0;
+    const bar = document.getElementById('dash-bar');
+    const pctEl = document.getElementById('dash-pct');
+    const msg = document.getElementById('dash-msg');
+    if (bar) bar.style.width = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+    const msgs = [[0,0,'Commence ta première tâche du jour 🌱'],[1,40,"Bien démarré ! Continue doucement 🌿"],[41,70,"Tu avances bien, bravo ! 💜"],[71,99,"Presque fini ! Tu prends soin de toi 🌸"],[100,100,"Journée accomplie ! Tu es formidable ✨"]];
+    const m = msgs.find(([a,b])=>pct>=a&&pct<=b);
+    if (m && msg) msg.textContent = m[2];
+  }
+
+  const TASK_KEY = 'tasks_' + todayKey;
+  function saveTaskState() {
+    const s = [];
+    document.querySelectorAll('.task-cb').forEach(cb => s.push(cb.classList.contains('done')));
+    localStorage.setItem(TASK_KEY, JSON.stringify(s));
+  }
+  function restoreTaskState() {
+    const saved = localStorage.getItem(TASK_KEY);
+    if (!saved) return;
+    JSON.parse(saved).forEach((v,i)=>{
+      const cbs = document.querySelectorAll('.task-cb');
+      if (cbs[i] && v) { cbs[i].classList.add('done'); cbs[i].textContent='✓'; }
+    });
+  }
+
+  // ── Init ─────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    buildDashboard();
+    loadState(); updateScore(); renderHistory();
+
+    // Week plan
+    const weekData = [
+      {j:'Lundi',    dej:'Poulet grillé, haricots verts & riz',        col:'Amandes & tisane hibiscus',        din:'Velouté de courgette & yaourt grec'},
+      {j:'Mardi',    dej:'Saumon vapeur, épinards & patate douce',      col:'Yaourt grec & graines de lin',     din:'Omelette aux champignons & salade'},
+      {j:'Mercredi', dej:'Bœuf haché maigre, courgettes & riz',         col:'Légumes croquants & houmous',      din:'Soupe de carottes & lentilles corail'},
+      {j:'Jeudi',    dej:'Cabillaud au four, brocoli & lentilles',       col:'Œuf dur & tomates cerises',        din:'Blanc de poulet vapeur & haricots verts'},
+      {j:'Vendredi', dej:'Thon, pois chiches & salade composée',        col:'Kéfir nature',                    din:'Maquereau, betterave & concombre'},
+      {j:'Samedi',   dej:'Escalope de dinde, champignons & quinoa',     col:'Amandes & tisane hibiscus',        din:'Soupe poireaux & pommes de terre'},
+      {j:'Dimanche', dej:'Poulet rôti, carottes & patate douce',        col:'Yaourt grec & graines de lin',     din:'Potage brocoli & fromage blanc'},
+    ];
+    const grid = document.getElementById('week-plan-grid');
+    if (grid) grid.innerHTML = weekData.map(d=>`
+      <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px;">
+        <div style="background:var(--purple);color:white;padding:10px 14px;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;">${d.j}</div>
+        <div style="padding:12px 14px;">
+          <div style="font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--light);font-weight:700;font-size:10px;text-transform:uppercase;margin-right:4px;">☕ Matin</span>Café ou thé sans sucre</div>
+          <div style="font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--light);font-weight:700;font-size:10px;text-transform:uppercase;margin-right:4px;">☀️ Déjeuner</span>${d.dej}</div>
+          <div style="font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--light);font-weight:700;font-size:10px;text-transform:uppercase;margin-right:4px;">🍎 Collation</span>${d.col}</div>
+          <div style="font-size:12px;padding:5px 0;"><span style="color:var(--light);font-weight:700;font-size:10px;text-transform:uppercase;margin-right:4px;">🌙 Dîner</span>${d.din}</div>
+        </div>
+      </div>`).join('');
+
+    showToast('🌸 Bienvenue !');
+  });
+</script>
+</body>
+</html>
